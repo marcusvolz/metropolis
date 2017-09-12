@@ -148,7 +148,12 @@ make_instance <- function(a, b) {
   points
 }
 
-
+for(i in 1:nrow(edges)) {
+  a <- c(edges$x[i], edges$y[i])
+  b <- c(edges$xend[i], edges$yend[i])
+  temp <- make_instance(a, b)
+  sand <- rbind(sand, temp)
+}
 
 # Create plot
 p <- ggplot() +

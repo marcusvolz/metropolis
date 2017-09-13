@@ -136,4 +136,4 @@ p <- ggplot() +
   theme_blankcanvas(margin_cm = 0)
 
 # Save plot
-ggsave("plots/plot005.png", p, width = 20, height = 20, units = "in", dpi = 300)
+ggsave("plots/plot003.png", p, width = 20, height = 20, units = "in", dpi = 300)

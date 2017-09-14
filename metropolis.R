@@ -14,7 +14,7 @@ n <- 1000 # iterations
 r <- 75 # neighbourhood
 width <- 10000 # canvas width
 height <- 10000 # canvas height
-delta <- 2 * pi / 180 # angle direction noise
+delta <- 45 * pi / 180 # angle direction noise
 p_branch <- 0.01 # probability of branching
 initial_pts <- 10 # number of initial points
 nframes <- 200 # number of tweenr frames
@@ -102,7 +102,7 @@ make_instance <- function(a, b) {
   # a <- runif(2)
   # b <- runif(2)
   theta <- atan((b[2] - a[2]) / (b[1] - a[1])) + pi/2
-  delta <- sqrt(sum((b - a)^2)) * runif(1, 0.25, 5)
+  delta <- sqrt(sum((b - a)^2)) * runif(1, 5, 25)
   test <- interpolate_line(a, b, theta, delta)
   
   points <- data.frame(x = numeric(0), y = numeric(0), id = integer(0))
@@ -136,4 +136,4 @@ p <- ggplot() +
   theme_blankcanvas(margin_cm = 0)
 
 # Save plot
-ggsave("plots/plot003.png", p, width = 20, height = 20, units = "in", dpi = 300)
+ggsave("plots/plot004.png", p, width = 20, height = 20, units = "in", dpi = 300)

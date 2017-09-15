@@ -10,13 +10,13 @@ library(viridis)
 set.seed(10000)
 
 # Parameters
-n <- 1000 # iterations
+n <- 500 # iterations
 r <- 75 # neighbourhood
 width <- 10000 # canvas width
 height <- 10000 # canvas height
-delta <- 45 * pi / 180 # angle direction noise
-p_branch <- 0.01 # probability of branching
-initial_pts <- 10 # number of initial points
+delta <- 0 * pi / 180 # angle direction noise
+p_branch <- 0.02 # probability of branching
+initial_pts <- 5 # number of initial points
 nframes <- 200 # number of tweenr frames
 
 # Function for generating a building
@@ -136,4 +136,4 @@ p <- ggplot() +
   theme_blankcanvas(margin_cm = 0)
 
 # Save plot
-ggsave("plots/plot004.png", p, width = 20, height = 20, units = "in", dpi = 300)
+ggsave("plots/plot005.png", p, width = 20, height = 20, units = "in", dpi = 300)

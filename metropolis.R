@@ -10,14 +10,14 @@ library(viridis)
 set.seed(10000)
 
 # Parameters
-n <- 500 # iterations
+n <- 2000 # iterations
 r <- 75 # neighbourhood
 width <- 10000 # canvas width
 height <- 10000 # canvas height
 delta <- 0 * pi / 180 # angle direction noise
-p_branch <- 0.02 # probability of branching
-initial_pts <- 5 # number of initial points
-nframes <- 200 # number of tweenr frames
+p_branch <- 0.01 # probability of branching
+initial_pts <- 25 # number of initial points
+nframes <- 500 # number of tweenr frames
 
 # Function for generating a building
 # generate_building <- function(p, q) {
@@ -110,7 +110,7 @@ make_instance <- function(a, b) {
   for(i in 1:nrow(test)) {
     a <- as.numeric(test[i, c("x", "y")])
     b <- as.numeric(test[i, c("xend", "yend")])
-    points <- points %>% rbind(sandpaint_line(a, b, 1000 / i) %>% mutate(id = i))
+    points <- points %>% rbind(sandpaint_line(a, b, 500 / i) %>% mutate(id = i))
   }
   points
 }
@@ -127,13 +127,13 @@ p <- ggplot() +
   #geom_segment(aes(x, y, xend = xend, yend = yend, size = -level), edges, lineend = "round", colour = "red") +
   #geom_segment(aes(x, y, xend = xend, yend = yend), perp, lineend = "round", alpha = 0.15) +
   #geom_point(aes(x, y), points) +
-  geom_point(aes(x, y), sand, size = 0.05, alpha = 0.05) +
+  geom_point(aes(x, y), sand, size = 0.05, alpha = 0.05, colour = "black") +
   xlim(0, 10000) +
   ylim(0, 10000) +
   coord_equal() +
   #scale_size_continuous(range = c(0.5, 2)) +
   #scale_color_viridis() +
-  theme_blankcanvas(margin_cm = 0)
+  theme_blankcanvas(margin_cm = 0, bg_col = "white")
 
 # Save plot
-ggsave("plots/plot005.png", p, width = 20, height = 20, units = "in", dpi = 300)
+ggsave("plots/plot006w.png", p, width = 20, height = 20, units = "in", dpi = 300)

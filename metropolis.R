@@ -10,13 +10,13 @@ library(viridis)
 set.seed(10000)
 
 # Parameters
-n <- 2000 # iterations
+n <- 500 # iterations
 r <- 75 # neighbourhood
 width <- 10000 # canvas width
 height <- 10000 # canvas height
 delta <- 0 * pi / 180 # angle direction noise
-p_branch <- 0.01 # probability of branching
-initial_pts <- 25 # number of initial points
+p_branch <- 0.1 # probability of branching
+initial_pts <- 1 # number of initial points
 nframes <- 500 # number of tweenr frames
 
 # Function for generating a building

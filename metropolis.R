@@ -10,7 +10,7 @@ library(viridis)
 set.seed(10000)
 
 # Parameters
-n <- 500 # iterations
+n <- 10000 # iterations
 r <- 75 # neighbourhood
 width <- 10000 # canvas width
 height <- 10000 # canvas height

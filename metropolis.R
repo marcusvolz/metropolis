@@ -7,16 +7,16 @@ library(tweenr)
 library(viridis)
 
 # Make reproducible
-set.seed(10000)
+set.seed(10001)
 
 # Parameters
 n <- 10000 # iterations
 r <- 75 # neighbourhood
 width <- 10000 # canvas width
 height <- 10000 # canvas height
-delta <- 0 * pi / 180 # angle direction noise
+delta <- 2 * pi / 180 # angle direction noise
 p_branch <- 0.1 # probability of branching
-initial_pts <- 1 # number of initial points
+initial_pts <- 3 # number of initial points
 nframes <- 500 # number of tweenr frames
 
 # Function for generating a building
@@ -66,7 +66,7 @@ while (i <= n) {
       points[i, ] <- c(xj, yj, alpha, lvl_new)
       edges[i, ] <- c(xj, yj, random_point$x[1], random_point$y[1], lvl_new)
       # Add a building if possible
-      buiding <- 
+      buiding <- 1
       valid <- TRUE
     }
   }
@@ -79,61 +79,61 @@ edges <- edges %>% filter(level > 0)
 sand <- data.frame(alpha = numeric(0), x = numeric(0), y = numeric(0))
 perp <- data.frame(x = numeric(0), y = numeric(0), xend = numeric(0), yend = numeric(0))
 
-make_instance <- function(a, b) {
-  # Function for adding points along a line with endpoints a and b
-  sandpaint_line <- function(a, b, n) {
-    result <- data.frame(alpha = runif(n, 0, 1)) %>%
-      mutate(x = (1 - alpha) * a[1] + alpha * b[1],
-             y = (1 - alpha) * a[2] + alpha * b[2])
-    result %>% select(x, y)
-  }
-  
-  # Function for interpolating a line in a specified direction
-  interpolate_line <- function(a, b, theta, delta) {
-    dx <- delta * cos(theta)
-    dy <- delta * sin(theta)
-    df1 <- data.frame(x = a[1], y = a[2], xend = b[1], yend = b[2])
-    df2 <- data.frame(x = a[1] + dx, y = a[2] + dy, xend = b[1] + dx, yend = b[2] + dy)
-    df <- list(df1, df2)
-    tf <- tween_states(df, tweenlength = 2, statelength = 0, ease = "linear", nframes = nframes)
-    tf
-  }
-  
-  # a <- runif(2)
-  # b <- runif(2)
-  theta <- atan((b[2] - a[2]) / (b[1] - a[1])) + pi/2
-  delta <- sqrt(sum((b - a)^2)) * runif(1, 5, 25)
-  test <- interpolate_line(a, b, theta, delta)
-  
-  points <- data.frame(x = numeric(0), y = numeric(0), id = integer(0))
-  
-  for(i in 1:nrow(test)) {
-    a <- as.numeric(test[i, c("x", "y")])
-    b <- as.numeric(test[i, c("xend", "yend")])
-    points <- points %>% rbind(sandpaint_line(a, b, 500 / i) %>% mutate(id = i))
-  }
-  points
-}
-
-for(i in 1:nrow(edges)) {
-  a <- c(edges$x[i], edges$y[i])
-  b <- c(edges$xend[i], edges$yend[i])
-  temp <- make_instance(a, b)
-  sand <- rbind(sand, temp)
-}
+# make_instance <- function(a, b) {
+#   # Function for adding points along a line with endpoints a and b
+#   sandpaint_line <- function(a, b, n) {
+#     result <- data.frame(alpha = runif(n, 0, 1)) %>%
+#       mutate(x = (1 - alpha) * a[1] + alpha * b[1],
+#              y = (1 - alpha) * a[2] + alpha * b[2])
+#     result %>% select(x, y)
+#   }
+#   
+#   # Function for interpolating a line in a specified direction
+#   interpolate_line <- function(a, b, theta, delta) {
+#     dx <- delta * cos(theta)
+#     dy <- delta * sin(theta)
+#     df1 <- data.frame(x = a[1], y = a[2], xend = b[1], yend = b[2])
+#     df2 <- data.frame(x = a[1] + dx, y = a[2] + dy, xend = b[1] + dx, yend = b[2] + dy)
+#     df <- list(df1, df2)
+#     tf <- tween_states(df, tweenlength = 2, statelength = 0, ease = "linear", nframes = nframes)
+#     tf
+#   }
+#   
+#   # a <- runif(2)
+#   # b <- runif(2)
+#   theta <- atan((b[2] - a[2]) / (b[1] - a[1])) + pi/2
+#   delta <- sqrt(sum((b - a)^2)) * runif(1, 5, 25)
+#   test <- interpolate_line(a, b, theta, delta)
+#   
+#   points <- data.frame(x = numeric(0), y = numeric(0), id = integer(0))
+#   
+#   for(i in 1:nrow(test)) {
+#     a <- as.numeric(test[i, c("x", "y")])
+#     b <- as.numeric(test[i, c("xend", "yend")])
+#     points <- points %>% rbind(sandpaint_line(a, b, 500 / i) %>% mutate(id = i))
+#   }
+#   points
+# }
+# 
+# for(i in 1:nrow(edges)) {
+#   a <- c(edges$x[i], edges$y[i])
+#   b <- c(edges$xend[i], edges$yend[i])
+#   temp <- make_instance(a, b)
+#   sand <- rbind(sand, temp)
+# }
 
 # Create plot
 p <- ggplot() +
-  #geom_segment(aes(x, y, xend = xend, yend = yend, size = -level), edges, lineend = "round", colour = "red") +
+  geom_segment(aes(x, y, xend = xend, yend = yend, size = -level), edges, lineend = "round") +
   #geom_segment(aes(x, y, xend = xend, yend = yend), perp, lineend = "round", alpha = 0.15) +
   #geom_point(aes(x, y), points) +
-  geom_point(aes(x, y), sand, size = 0.05, alpha = 0.05, colour = "black") +
+  #geom_point(aes(x, y), sand, size = 0.05, alpha = 0.05, colour = "black") +
   xlim(0, 10000) +
   ylim(0, 10000) +
   coord_equal() +
-  #scale_size_continuous(range = c(0.5, 2)) +
+  scale_size_continuous(range = c(0.5, 0.5)) +
   #scale_color_viridis() +
   theme_blankcanvas(margin_cm = 0, bg_col = "white")
 
 # Save plot
-ggsave("plots/plot006w.png", p, width = 20, height = 20, units = "in", dpi = 300)
+ggsave("plots/plot007w.png", p, width = 20, height = 20, units = "cm", dpi = 300)

@@ -1,7 +1,6 @@
 # Metropolis: Generative city visualisations
 
 # Packages
-library(ggart)
 library(tidyverse)
 library(tweenr)
 library(viridis)
@@ -133,7 +132,8 @@ p <- ggplot() +
   coord_equal() +
   scale_size_continuous(range = c(0.5, 0.5)) +
   #scale_color_viridis() +
-  theme_blankcanvas(margin_cm = 0, bg_col = "white")
+  theme_void() +
+  theme(legend.position = "none")
 
 # Save plot
 ggsave("plots/plot007w.png", p, width = 20, height = 20, units = "cm", dpi = 300)
